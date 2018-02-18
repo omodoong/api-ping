@@ -4,13 +4,17 @@ import(
 	"fmt"
 	"net/http"
 	"log"
+	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
 
 var timeoutSec int
+var message    string
+var logFile *os.File
 
 func Getping(w http.ResponseWriter, r *http.Request) {
 	dest := r.FormValue("dest")
@@ -20,13 +24,18 @@ func Getping(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(dest))
 
 	out, _ := exec.Command("ping", dest, "-c 3", "-i 3", "-w 3").Output()
+	
 	if strings.Contains(string(out), "Destination Host Unreachable") {
-    	fmt.Println("Unreachable")
-    	fmt.Fprintln(w, "   (Unreachable)")
+    	fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "Status No Connected")
+    	fmt.Fprintln(w, "")
+    	fmt.Fprintln(w, "Status Not Connected")
 		} else {
-    		fmt.Println("Status Connected")
-    		fmt.Fprintln(w, "  (Status Conencted)")
-	}		
+    		fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "Status Connected")
+    		fmt.Fprintln(w, "")
+    		fmt.Fprintln(w, "Status Connected")
+
+	}
+	fmt.Fprintln(w, "time :", time.Now().Format("Mon Jan 2 15:04:05 MST 2006"))		
 }
 
 func main() {
