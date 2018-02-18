@@ -19,7 +19,7 @@ func Getping(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "destionation : ")
 	w.Write([]byte(dest))
 
-	out, _ := exec.Command("ping", dest, "-c 3", "-i 3", "-w 10").Output()
+	out, _ := exec.Command("ping", dest, "-c 3", "-i 3", "-w 3").Output()
 	if strings.Contains(string(out), "Destination Host Unreachable") {
     	fmt.Println("Unreachable")
     	fmt.Fprintln(w, "   (Unreachable)")
