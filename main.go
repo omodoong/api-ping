@@ -5,7 +5,7 @@ import(
 	"net/http"
 	"log"
 	"os/exec"
-	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -15,10 +15,18 @@ var timeoutSec int
 func Getping(w http.ResponseWriter, r *http.Request) {
 	dest := r.FormValue("dest")
 	fmt.Println("destionation : ", dest)
-	fmt.Fprint(w, "test ping destionation : ")
+	fmt.Fprintln(w, "Report Connection...")
+	fmt.Fprint(w, "destionation : ")
 	w.Write([]byte(dest))
 
-	exec.Command("ping", "-c", "1", "-w", strconv.Itoa(timeoutSec), dest)
+	out, _ := exec.Command("ping", dest, "-c 3", "-i 3", "-w 10").Output()
+	if strings.Contains(string(out), "Destination Host Unreachable") {
+    	fmt.Println("Unreachable")
+    	fmt.Fprintln(w, "   (Unreachable)")
+		} else {
+    		fmt.Println("Status Connected")
+    		fmt.Fprintln(w, "  (Status Conencted)")
+	}		
 }
 
 func main() {
