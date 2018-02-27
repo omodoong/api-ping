@@ -13,7 +13,7 @@ import(
 )
 
 type Category struct {
-	Rtts []string		`json: "rtts_latency"`
+    Rtts []string		`json: "rtts_latency"`
     Avg  string			`json: "average_latency"`
     Max string			`json: "maximum_latency"`
     Min  string			`json: "average_latency"`
