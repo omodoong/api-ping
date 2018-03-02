@@ -42,7 +42,6 @@ func Getping(w http.ResponseWriter, r *http.Request) {
     Smax := fmt.Sprint(max)
     min := stats.MinRtt
     Smin := fmt.Sprint(min)
-    pack := stats.PacketLoss
 
 
     // masukkan rtts dalam bentuk []time.duration ke rtts dalam bentuk []string
